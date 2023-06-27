@@ -19,11 +19,10 @@ const UserStateProvider = ({ children }) => {
         setCurrentUser(user.email);
         setIsAuthenticated(true);
       } else {
-        navigate('/login')
+        navigate("/login");
       }
     });
   }, []);
-
 
   return (
     <UserState.Provider

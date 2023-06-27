@@ -6,6 +6,7 @@ import { UserState } from "../context/UserStateProvider";
 import { auth } from "../.firebase/firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { addUser } from "../functions/functions";
 
 const Register = () => {
   const { email, password, setEmail, setPassword } = useContext(UserState);
@@ -23,6 +24,8 @@ const Register = () => {
         const errorCode = error.code;
         const errorMessage = error.message;
       });
+
+      addUser('http://localhost:8001/user/create', email)
 
     navigate("/login");
   };

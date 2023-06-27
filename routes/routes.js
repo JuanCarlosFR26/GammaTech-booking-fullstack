@@ -1,5 +1,5 @@
 const express = require('express');
-const { getUsers, getUserById, createNewUser, updateUserById, deleteUserById } = require('../controllers/dbUsersControllers');
+const { getUsers, getUserById, createNewUser, updateUserById, deleteUserById, getUserByEmail } = require('../controllers/dbUsersControllers');
 const { getRooms, getRoomById, createNewRoom, updateRoomById, deleteRoomById } = require('../controllers/dbRoomsControllers');
 const { getReservations, getReservationById, createNewReservation, deleteReservationById, updateReservationById } = require('../controllers/dbReservationsControllers');
 const { checkCreateRoom, checkCreateUser, checkCreateReservation } = require('../middlewares/middlewaresCheck');
@@ -8,6 +8,7 @@ const router = express.Router();
 // --------------- Users -------------
 router.get('/users', getUsers);
 router.get('/user/:id', getUserById);
+router.get('/user/email/:email', getUserByEmail);
 router.post('/user/create', checkCreateUser, createNewUser);
 router.patch('/user/update/:id', checkCreateUser, updateUserById);
 router.delete('/user/delete/:id', deleteUserById);

@@ -5,6 +5,9 @@ const listReservations = `SELECT * FROM reservations`;
 const getUserId = `SELECT * FROM users WHERE user_id = $1`;
 const getRoomId = `SELECT * FROM rooms WHERE room_id = $1`;
 const getReservationId = `SELECT * FROM reservations WHERE reservation_id = $1`;
+// const getReservationByEmail = `SELECT reservation_id FROM reservations 
+// INNER JOIN users `;
+const getUserEmail = `SELECT user_id FROM users WHERE name = $1`;
 
 // ------------- POST ---------------------------
 const createRoom = `INSERT INTO rooms (name, tv, air_conditioning) VALUES ($1, $2, $3)`;
@@ -39,4 +42,5 @@ module.exports = {
   deleteReservationWithIdUser,
   deleteRoom,
   updateReservation,
+  getUserEmail,
 };
