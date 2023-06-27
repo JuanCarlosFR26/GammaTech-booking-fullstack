@@ -38,7 +38,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center  w-[1480px] h-screen">
         <div
           className="flex items-center justify-center bg-cover bg-center w-2/4 h-screen"
           style={{ backgroundImage: `url(${banner})` }}
