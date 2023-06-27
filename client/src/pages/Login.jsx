@@ -1,19 +1,21 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import Form from "../components/Form";
 import banner from "../img/registerbanner.jpg";
 import logo from "../img/logo.png";
 import { UserState } from "../context/UserStateProvider";
 import { auth } from "../.firebase/firebaseConfig.js";
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { setCurrentUser, email, password, setEmail, setPassword, setIsAuthenticated } = useContext(UserState);
+  const {
+    setCurrentUser,
+    email,
+    password,
+    setEmail,
+    setPassword,
+    setIsAuthenticated,
+  } = useContext(UserState);
 
   const navigate = useNavigate();
 
@@ -29,21 +31,10 @@ const Login = () => {
         const errorMessage = error.message;
       });
 
-      navigate('/')
-      setCurrentUser(email)
-      setIsAuthenticated(true)
+    navigate("/");
+    setCurrentUser(email);
+    setIsAuthenticated(true);
   };
-
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if(user) {
-  //       setCurrentUser(user.email)
-  //       setIsAuthenticated(true)
-  //     } else {
-  //       setCurrentUser(null);
-  //     }
-  //   })
-  // }, [])
 
   return (
     <>
@@ -55,7 +46,14 @@ const Login = () => {
           <img className="w-96 relative bottom-32" src={logo}></img>
         </div>
         <div className="flex items-center justify-center w-2/4 h-screen bg-yellow-100">
-          <Form handleSubmit={handleSubmit} text={"Login"} path={"/register"} onChangeEmail={(e) => setEmail(e.target.value)} onChangePassword={(e) => setPassword(e.target.value)} linkText={'No tienes una cuenta?'}/>
+          <Form
+            handleSubmit={handleSubmit}
+            text={"Login"}
+            path={"/register"}
+            onChangeEmail={(e) => setEmail(e.target.value)}
+            onChangePassword={(e) => setPassword(e.target.value)}
+            linkText={"No tienes una cuenta?"}
+          />
         </div>
       </div>
     </>
