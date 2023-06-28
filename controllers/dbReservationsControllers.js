@@ -5,6 +5,7 @@ const {
   createReservation,
   deleteReservation,
   updateReservation,
+  getReservationEmail,
 } = require("../queries/queries");
 
 const getReservations = async (req, res) => {
@@ -30,6 +31,29 @@ const getReservationById = async (req, res) => {
       res
         .status(200)
         .json({ response: true, message: "This reservation is not exists" });
+    } else {
+      res.status(200).json({ response: true, result: response.rows });
+    }
+  } catch (error) {
+    res.status(400).json({ response: false, error: error.message });
+  } finally {
+    client.release(true);
+  }
+};
+
+const getReservationByEmail = async (req, res) => {
+  const client = await pool.connect();
+  const requiredEmail = req.params.email;
+
+  try {
+    const response = await client.query(getReservationEmail, [requiredEmail]);
+    if (response.rows.length === 0) {
+      res
+        .status(200)
+        .json({
+          response: true,
+          message: "This user doesn't have reservations",
+        });
     } else {
       res.status(200).json({ response: true, result: response.rows });
     }
@@ -112,4 +136,5 @@ module.exports = {
   createNewReservation,
   deleteReservationById,
   updateReservationById,
+  getReservationByEmail
 };
