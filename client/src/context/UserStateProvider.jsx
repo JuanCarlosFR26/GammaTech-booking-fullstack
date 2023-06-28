@@ -10,6 +10,8 @@ const UserStateProvider = ({ children }) => {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [idUser, setIdUser] = useState(null);
+  const [reservations, setReservations] = useState(null);
 
   const navigate = useNavigate();
 
@@ -22,6 +24,14 @@ const UserStateProvider = ({ children }) => {
         navigate("/login");
       }
     });
+    const idSessionStorage = sessionStorage.getItem('sessionId')
+    if(idSessionStorage) {
+      setIdUser(idSessionStorage)
+    }
+    const reservationStorage = JSON.parse(sessionStorage.getItem('reservations'))
+    if(reservationStorage) {
+      setReservations(reservationStorage)
+    }
   }, []);
 
   return (
@@ -35,6 +45,10 @@ const UserStateProvider = ({ children }) => {
         setPassword,
         isAuthenticated,
         setIsAuthenticated,
+        idUser,
+        setIdUser,
+        reservations,
+        setReservations
       }}
     >
       {children}

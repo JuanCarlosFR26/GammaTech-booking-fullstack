@@ -6,6 +6,7 @@ import { UserState } from "../context/UserStateProvider";
 import { auth } from "../.firebase/firebaseConfig.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { getData } from "../functions/functions";
 
 const Login = () => {
   const {
@@ -15,6 +16,8 @@ const Login = () => {
     setEmail,
     setPassword,
     setIsAuthenticated,
+    setIdUser,
+    setReservations
   } = useContext(UserState);
 
   const navigate = useNavigate();
@@ -34,6 +37,25 @@ const Login = () => {
     navigate("/");
     setCurrentUser(email);
     setIsAuthenticated(true);
+
+    getData(`http://localhost:8001/user/email/${email}`).then(res => {
+      console.log(res.result);
+      const [{user_id}] = res.result
+      if(user_id) {
+        window.sessionStorage.setItem('sessionId', user_id)
+        setIdUser(user_id)
+        getData(`http://localhost:8001/reservations/email/${user_id}`).then(
+      (res) => {
+        if(res.result) {
+          window.sessionStorage.setItem('reservations', JSON.stringify(res.result))
+          setReservations(res.result)
+        }
+      }
+    );
+      }
+    })
+
+    window.sessionStorage.setItem('currentUser', email);
   };
 
   return (

@@ -1,21 +1,33 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import logo from "../img/logo.png";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { UserState } from "../context/UserStateProvider";
 import Button from "../components/Button";
 import { signOut } from "firebase/auth";
 import { auth } from "../.firebase/firebaseConfig";
+import { getData } from "../functions/functions";
 
 const Layout = () => {
-  const { currentUser, setIsAuthenticated, setCurrentUser } =
+  const { currentUser, setIsAuthenticated, setCurrentUser, idUser } =
     useContext(UserState);
 
+    const [sessionId, setSessionId] = useState(null)
+
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUserId = sessionStorage.getItem('sessionId')
+    if(storedUserId) {
+      setSessionId(storedUserId)
+    }
+  }, [])
+
 
   const logout = async () => {
     signOut(auth)
       .then(() => {
-        console.log("Signout");
+        
       })
       .catch((error) => {
         console.log(error);
@@ -23,7 +35,12 @@ const Layout = () => {
     setIsAuthenticated(false);
     setCurrentUser(null);
     navigate("/login");
+    window.sessionStorage.removeItem("currentUser");
+    window.sessionStorage.removeItem("sessionId");
+    window.sessionStorage.removeItem("reservations")
   };
+
+
 
   return (
     <>
@@ -46,7 +63,9 @@ const Layout = () => {
             </li>
           </div>
           <div className="flex items-center gap-6 mr-10">
-            <li className="text-white font-bold">Usuario: {currentUser}</li>
+            <li className="text-white font-bold">
+              Usuario: {currentUser}. Id: {idUser ? idUser : 'No hay id'}
+            </li>
             <li>
               <Button
                 className={

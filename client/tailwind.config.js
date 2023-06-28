@@ -9,6 +9,8 @@ module.exports = {
         li: '#F1C27B',
         nav: '#A2CDB0',
         liHover: '#85A389',
+        reservationCard: '#898121',
+        roomCard: '#F7F1E5'
       }
     },
   },

@@ -23,7 +23,7 @@ router.delete('/room/delete/:id', deleteRoomById);
 // --------------- Reservations -------------
 router.get('/reservations', getReservations);
 router.get('/reservation/:id', getReservationById);
-router.get('/reservations/email/:email', getReservationByEmail);
+router.get('/reservations/email/:id', getReservationByEmail);
 router.post('/reservation/create', checkCreateReservation, createNewReservation);
 router.patch('/reservation/update/:id', checkCreateReservation, updateReservationById)
 router.delete('/reservation/delete/:id', deleteReservationById);

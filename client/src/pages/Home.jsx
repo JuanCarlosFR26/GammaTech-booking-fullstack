@@ -1,39 +1,34 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getData } from "../functions/functions";
 import { UserState } from "../context/UserStateProvider";
-import { DataProvider } from "../context/DataBaseProvider";
+import Reservation from "../components/Reservation";
 
 const Home = () => {
-  const { currentUser } = useContext(UserState);
-  const { userId, setUserId, reservations, setReservations } =
-    useContext(DataProvider);
+  const {  currentUser, reservations } = useContext(UserState);
 
-  useEffect(() => {
-    getData(`http://localhost:8001/user/email/${currentUser}`).then((res) => {
-      if (res.result) {
-        console.log(res.result);
-        const [{user_id}] = res.result;
-        console.log(user_id);
-        getData(`http://localhost:8001/reservations/email/${user_id}`).then((res) => {
-          setReservations(res.result)
-        })
-      }
-    });
-  }, []);
 
+  console.log(reservations);
   return (
     <>
-      <div>
-        {
-          reservations ? reservations.map((reservation, i) => (
-            <div key={i}>
-              <h1>User: {reservation.name}</h1>
-              <p>Room: {reservation.room_id}</p>
-              <p>Time start: {reservation.time_start}</p>
-              <p>Time end: {reservation.time_end}</p>
-            </div>
-          )) : <div>No tienes reservations</div>
-        }
+      <div className="bg-white h-screen flex items-center flex-col gap-8">
+        <h1 className="font-bold text-3xl mt-10">Welcome {currentUser}. This is your reservations list:</h1>
+        <div className="flex flex-wrap gap-8">
+          {reservations ? (
+            reservations.map((reservation, i) => (
+              <div key={i}>
+                <Reservation
+                  className={'w-88 flex flex-col items-start rounded-2xl p-4 bg-reservationCard font-bold'}
+                  id={i}
+                  room={reservation.room_id}
+                  start={reservation.time_start}
+                  end={reservation.time_end}
+                />
+              </div>
+            ))
+          ) : (
+            <div>No tienes reservations</div>
+          )}
+        </div>
       </div>
     </>
   );

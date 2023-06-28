@@ -43,7 +43,7 @@ const getReservationById = async (req, res) => {
 
 const getReservationByEmail = async (req, res) => {
   const client = await pool.connect();
-  const requiredEmail = req.params.email;
+  const requiredEmail = req.params.id;
 
   try {
     const response = await client.query(getReservationEmail, [requiredEmail]);
@@ -68,6 +68,9 @@ const createNewReservation = async (req, res) => {
   const client = await pool.connect();
   const { user_id, room_id, time_start, time_end } = req.body;
 
+  const now = new Date();
+  const formattedDateTime = now.toISOString().slice(0,19).replace('T', '')
+
   const userQuery = "SELECT * FROM users WHERE user_id = $1";
   const userResult = await client.query(userQuery, [user_id]);
   if (userResult.rows.length === 0) {
@@ -84,8 +87,8 @@ const createNewReservation = async (req, res) => {
     const response = await client.query(createReservation, [
       user_id,
       room_id,
-      time_start,
-      time_end,
+      formattedDateTime,
+      formattedDateTime,
     ]);
     res.status(201).json({ response: true, result: response.rows });
   } catch (error) {
