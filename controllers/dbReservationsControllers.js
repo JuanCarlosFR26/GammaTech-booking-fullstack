@@ -69,7 +69,7 @@ const createNewReservation = async (req, res) => {
   const { user_id, room_id, time_start, time_end } = req.body;
 
   const now = new Date();
-  const formattedDateTime = now.toISOString().slice(0,19).replace('T', '')
+  const formattedDateTime = now.toISOString().slice(0,19).replace('T', ' ')
 
   const userQuery = "SELECT * FROM users WHERE user_id = $1";
   const userResult = await client.query(userQuery, [user_id]);
@@ -87,8 +87,8 @@ const createNewReservation = async (req, res) => {
     const response = await client.query(createReservation, [
       user_id,
       room_id,
-      formattedDateTime,
-      formattedDateTime,
+      time_start,
+      time_end,
     ]);
     res.status(201).json({ response: true, result: response.rows });
   } catch (error) {
